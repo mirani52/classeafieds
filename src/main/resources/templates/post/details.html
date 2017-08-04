@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout :: head(posts)"></head>
+<body>
+
+<nav th:replace="layout :: navbar"> </nav>
+<div th:replace="layout :: flash"></div>
+
+<div class="container">
+
+    <!-- Portfolio Item Heading -->
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header" th:text="*{post.title}"></h1>
+        </div>
+    </div>
+    <!-- /.row -->
+
+    <!-- Portfolio Item Row -->
+    <div class="row">
+        <div class="col-md-6">
+            <img class="img-responsive" th:src="@{|/posts/${post.id}/image|}" alt=""/>
+        </div>
+
+        <div class="col-md-6 table-responsive">
+            <table style="width:100%">
+                <tr>
+                    <th>Posted By:</th>
+                    <td><a th:text="*{post.email}"></a></td>
+                </tr>
+                <tr>
+                    <th>Buy/Rent:</th>
+                    <td th:if="*{post.buy}">For sale</td>
+                    <td th:unless="*{post.buy}">Rent</td>
+                </tr>
+                <tr th:unless="*{post.buy}">
+                    <th>Availability</th>
+                    <td th:if="*{post.rentStatus}">Available</td>
+                    <td th:unless="*{post.rentStatus}">Someone is currently renting this item</td>
+                </tr>
+                <tr>
+                    <th>Price</th>
+                    <td th:if="*{post.buy}" th:text="'$' + ${post.price}"></td>
+                    <td th:unless="*{post.buy}" th:text="'$' + ${post.price} + '/day'"></td>
+                </tr>
+                <tr>
+                    <th>Date Posted</th>
+                    <td th:text="*{post.dateUploaded}" > </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <h2 class="page-header">Description</h2>
+            <p th:text="*{post.description}"></p>
+        </div>
+    </div>
+    <div class="row">
+            <center sec:authorize="isAuthenticated()">
+                <a th:href="@{|/posts/${post.id}/edit|}" ><button type="button" class="btn btn-danger btn-lg">Edit Post</button></a>
+                <a th:href="@{|/posts/${post.id}/delete|}" th:object="${post}" ><button type="button" class="btn btn-danger btn-lg">Delete Post</button></a>
+            </center>
+    </div>
+</div>
+
+<footer th:replace="layout :: bottom"></footer>
+
+<div th:replace="layout :: scripts"></div>
+</body>
+</html>

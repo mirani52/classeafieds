@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout :: head('posts')"></head>
+
+<body>
+
+<nav th:replace="layout :: navbar"> </nav>
+
+<div class="container">
+    <h2 th:if="${#httpServletRequest.servletPath.equals('/myposts')}">My Posts</h2>
+	<h2 th:if="${#httpServletRequest.servletPath.contains('/search')}">Search Results</h2>
+    <div class="row">
+
+        <!-- BEGIN PRODUCTS -->
+        <div th:each="post : ${posts}" class="col-md-3 col-sm-6">
+    		<span class="thumbnail">
+      			<img th:src="@{|/posts/${post.id}/image|}" alt="..."/>
+      			<h4 th:text="${post.title}">Product Tittle</h4>
+
+      			<p th:text="${post.description}"> </p>
+      			<hr class="line"/>
+      			<div class="row">
+      				<div class="col-md-6 col-sm-6">
+      					<p class="price" th:text="'$' + ${post.price}"></p>
+      				</div>
+      				<div class="details col-md-6 col-sm-6">
+                        <a th:href="@{|/posts/${post.id}|}" >Details</a>
+      				</div>
+      			</div>
+    		</span>
+        </div>
+
+    </div>
+</div>
+
+<footer th:replace="layout :: bottom"></footer>
+
+<div th:replace="layout :: scripts"></div>
+</body>
+</html>
